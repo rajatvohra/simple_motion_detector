@@ -7,6 +7,12 @@ cap = cv2.VideoCapture('vtest.avi')
 
 ret, frame1 =cap.read()
 ret,frame2 =cap.read()
+
+frame_width = int(cap.get(3)) 
+frame_height = int(cap.get(4)) 
+size = (frame_width, frame_height) 
+result = cv2.VideoWriter('result_60_fps.avi',  cv2.VideoWriter_fourcc(*'MJPG'),  60, size) 
+
 while cap.isOpened():
     if not ret:
         print("there seems to be a problem with the stream, Exiting......")
@@ -27,6 +33,7 @@ while cap.isOpened():
     #cv2.drawContours(frame1,contours,-1,(0,0,255),2)
 
     cv2.imshow("motion",frame1)
+    result.write(frame1) 
     frame1=frame2
     ret,frame2=cap.read()
     if cv2.waitKey(25) & 0xFF == ord('q'):
@@ -36,3 +43,4 @@ while cap.isOpened():
 
 cv2.destroyAllWindows()
 cap.release()
+result.release()
